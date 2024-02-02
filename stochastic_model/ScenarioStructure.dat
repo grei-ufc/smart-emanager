@@ -1,0 +1,80 @@
+set Stages := FirstStage SecondStage ;
+
+set Nodes := RootNode
+Scenario-demand0_spot1_demand_response8-Node
+Scenario-demand0_spot1_demand_response2-Node
+Scenario-demand0_spot1_demand_response7-Node
+Scenario-demand0_spot0_demand_response8-Node
+Scenario-demand0_spot0_demand_response2-Node
+Scenario-demand0_spot0_demand_response7-Node
+Scenario-demand0_spot7_demand_response8-Node
+Scenario-demand0_spot7_demand_response2-Node
+Scenario-demand0_spot7_demand_response7-Node
+ ;
+
+param NodeStage := RootNode FirstStage
+Scenario-demand0_spot1_demand_response8-Node SecondStage
+Scenario-demand0_spot1_demand_response2-Node SecondStage
+Scenario-demand0_spot1_demand_response7-Node SecondStage
+Scenario-demand0_spot0_demand_response8-Node SecondStage
+Scenario-demand0_spot0_demand_response2-Node SecondStage
+Scenario-demand0_spot0_demand_response7-Node SecondStage
+Scenario-demand0_spot7_demand_response8-Node SecondStage
+Scenario-demand0_spot7_demand_response2-Node SecondStage
+Scenario-demand0_spot7_demand_response7-Node SecondStage
+ ;
+
+set Children[RootNode] := Scenario-demand0_spot1_demand_response8-Node
+Scenario-demand0_spot1_demand_response2-Node
+Scenario-demand0_spot1_demand_response7-Node
+Scenario-demand0_spot0_demand_response8-Node
+Scenario-demand0_spot0_demand_response2-Node
+Scenario-demand0_spot0_demand_response7-Node
+Scenario-demand0_spot7_demand_response8-Node
+Scenario-demand0_spot7_demand_response2-Node
+Scenario-demand0_spot7_demand_response7-Node
+ ;
+
+param ConditionalProbability := RootNode 1.0
+Scenario-demand0_spot1_demand_response8-Node 0.09144947
+Scenario-demand0_spot1_demand_response2-Node 0.03048316
+Scenario-demand0_spot1_demand_response7-Node 0.01524158
+Scenario-demand0_spot0_demand_response8-Node 0.52034751
+Scenario-demand0_spot0_demand_response2-Node 0.17344917
+Scenario-demand0_spot0_demand_response7-Node 0.08672458
+Scenario-demand0_spot7_demand_response8-Node 0.05486968
+Scenario-demand0_spot7_demand_response2-Node 0.01828989
+Scenario-demand0_spot7_demand_response7-Node 0.00914495
+ ;
+
+set Scenarios :=
+Scenario-demand0_spot1_demand_response8
+Scenario-demand0_spot1_demand_response2
+Scenario-demand0_spot1_demand_response7
+Scenario-demand0_spot0_demand_response8
+Scenario-demand0_spot0_demand_response2
+Scenario-demand0_spot0_demand_response7
+Scenario-demand0_spot7_demand_response8
+Scenario-demand0_spot7_demand_response2
+Scenario-demand0_spot7_demand_response7
+ ;
+
+param ScenarioLeafNode :=
+Scenario-demand0_spot1_demand_response8 Scenario-demand0_spot1_demand_response8-Node
+Scenario-demand0_spot1_demand_response2 Scenario-demand0_spot1_demand_response2-Node
+Scenario-demand0_spot1_demand_response7 Scenario-demand0_spot1_demand_response7-Node
+Scenario-demand0_spot0_demand_response8 Scenario-demand0_spot0_demand_response8-Node
+Scenario-demand0_spot0_demand_response2 Scenario-demand0_spot0_demand_response2-Node
+Scenario-demand0_spot0_demand_response7 Scenario-demand0_spot0_demand_response7-Node
+Scenario-demand0_spot7_demand_response8 Scenario-demand0_spot7_demand_response8-Node
+Scenario-demand0_spot7_demand_response2 Scenario-demand0_spot7_demand_response2-Node
+Scenario-demand0_spot7_demand_response7 Scenario-demand0_spot7_demand_response7-Node
+ ;
+
+set StageVariables[FirstStage] := p_bilateral
+soc[*] ;
+
+set StageVariables[SecondStage] := p_spot[*] ;
+
+param StageCost := FirstStage  StageCost
+SecondStage StageCost ;
