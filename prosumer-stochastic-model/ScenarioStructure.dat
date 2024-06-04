@@ -1,74 +1,74 @@
 set Stages := FirstStage SecondStage ;
 
 set Nodes := RootNode
-Scenario-demand0_spot8-Node
 Scenario-demand0_spot7-Node
-Scenario-demand0_spot5-Node
-Scenario-demand1_spot8-Node
+Scenario-demand0_spot6-Node
+Scenario-demand0_spot4-Node
 Scenario-demand1_spot7-Node
-Scenario-demand1_spot5-Node
-Scenario-demand2_spot8-Node
+Scenario-demand1_spot6-Node
+Scenario-demand1_spot4-Node
 Scenario-demand2_spot7-Node
-Scenario-demand2_spot5-Node
+Scenario-demand2_spot6-Node
+Scenario-demand2_spot4-Node
  ;
 
 param NodeStage := RootNode FirstStage
-Scenario-demand0_spot8-Node SecondStage
 Scenario-demand0_spot7-Node SecondStage
-Scenario-demand0_spot5-Node SecondStage
-Scenario-demand1_spot8-Node SecondStage
+Scenario-demand0_spot6-Node SecondStage
+Scenario-demand0_spot4-Node SecondStage
 Scenario-demand1_spot7-Node SecondStage
-Scenario-demand1_spot5-Node SecondStage
-Scenario-demand2_spot8-Node SecondStage
+Scenario-demand1_spot6-Node SecondStage
+Scenario-demand1_spot4-Node SecondStage
 Scenario-demand2_spot7-Node SecondStage
-Scenario-demand2_spot5-Node SecondStage
+Scenario-demand2_spot6-Node SecondStage
+Scenario-demand2_spot4-Node SecondStage
  ;
 
-set Children[RootNode] := Scenario-demand0_spot8-Node
-Scenario-demand0_spot7-Node
-Scenario-demand0_spot5-Node
-Scenario-demand1_spot8-Node
+set Children[RootNode] := Scenario-demand0_spot7-Node
+Scenario-demand0_spot6-Node
+Scenario-demand0_spot4-Node
 Scenario-demand1_spot7-Node
-Scenario-demand1_spot5-Node
-Scenario-demand2_spot8-Node
+Scenario-demand1_spot6-Node
+Scenario-demand1_spot4-Node
 Scenario-demand2_spot7-Node
-Scenario-demand2_spot5-Node
+Scenario-demand2_spot6-Node
+Scenario-demand2_spot4-Node
  ;
 
 param ConditionalProbability := RootNode 1.0
-Scenario-demand0_spot8-Node 0.38683128
-Scenario-demand0_spot7-Node 0.06447188
-Scenario-demand0_spot5-Node 0.12894376
-Scenario-demand1_spot8-Node 0.23045267
-Scenario-demand1_spot7-Node 0.03840878
-Scenario-demand1_spot5-Node 0.07681756
-Scenario-demand2_spot8-Node 0.04938272
-Scenario-demand2_spot7-Node 0.00823045
-Scenario-demand2_spot5-Node 0.01646091
+Scenario-demand0_spot7-Node 0.35390947
+Scenario-demand0_spot6-Node 0.05898491
+Scenario-demand0_spot4-Node 0.11796982
+Scenario-demand1_spot7-Node 0.25514403
+Scenario-demand1_spot6-Node 0.04252401
+Scenario-demand1_spot4-Node 0.08504801
+Scenario-demand2_spot7-Node 0.05761317
+Scenario-demand2_spot6-Node 0.00960219
+Scenario-demand2_spot4-Node 0.01920439
  ;
 
 set Scenarios :=
-Scenario-demand0_spot8
 Scenario-demand0_spot7
-Scenario-demand0_spot5
-Scenario-demand1_spot8
+Scenario-demand0_spot6
+Scenario-demand0_spot4
 Scenario-demand1_spot7
-Scenario-demand1_spot5
-Scenario-demand2_spot8
+Scenario-demand1_spot6
+Scenario-demand1_spot4
 Scenario-demand2_spot7
-Scenario-demand2_spot5
+Scenario-demand2_spot6
+Scenario-demand2_spot4
  ;
 
 param ScenarioLeafNode :=
-Scenario-demand0_spot8 Scenario-demand0_spot8-Node
 Scenario-demand0_spot7 Scenario-demand0_spot7-Node
-Scenario-demand0_spot5 Scenario-demand0_spot5-Node
-Scenario-demand1_spot8 Scenario-demand1_spot8-Node
+Scenario-demand0_spot6 Scenario-demand0_spot6-Node
+Scenario-demand0_spot4 Scenario-demand0_spot4-Node
 Scenario-demand1_spot7 Scenario-demand1_spot7-Node
-Scenario-demand1_spot5 Scenario-demand1_spot5-Node
-Scenario-demand2_spot8 Scenario-demand2_spot8-Node
+Scenario-demand1_spot6 Scenario-demand1_spot6-Node
+Scenario-demand1_spot4 Scenario-demand1_spot4-Node
 Scenario-demand2_spot7 Scenario-demand2_spot7-Node
-Scenario-demand2_spot5 Scenario-demand2_spot5-Node
+Scenario-demand2_spot6 Scenario-demand2_spot6-Node
+Scenario-demand2_spot4 Scenario-demand2_spot4-Node
  ;
 
 set StageVariables[FirstStage] := p_bilateral
