@@ -3,7 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import json
 import pathlib
-
 import sys
 sys.path.append('../')
 
@@ -12,21 +11,29 @@ from load_data import get_load_data, get_gen_data, get_spot_prices_data
 
 def pick_load_scenarios_from_db(n, data=None):
     loads = list()
-
+    #print ('loads',loads)
     if data:
         node_id = data['node_id']
+        #print ('node_id',node_id)
         for scenario in range(n):
             load_df = get_load_data(load_index=node_id)[:96]
+            #print ('load_df',load_df)
             normalized_df = (load_df-load_df.min())/(load_df.max()-load_df.min())
+            #print ('normalized_df',normalized_df)
             load_df = data['load_kw'] * normalized_df
+            #print ('load_df',load_df)
             loads.append(load_df.pload.values)
+            #print('loads',loads)
             node_id += 1
     else:
         for scenario in range(n):
             some_load_max_value = 2.5
             load_df = get_load_data()[:96]
+            #print ('load_df',load_df)
             normalized_df = (load_df-load_df.min())/(load_df.max()-load_df.min())
+            #print ('normalized_df',normalized_df)
             load_df = some_load_max_value * normalized_df
+            #print ('load_df',load_df)
             loads.append(load_df.pload.values)
     return loads
 
@@ -36,18 +43,25 @@ def pick_gen_scenarios_from_db(n, data=None):
 
     if data:
         node_id = data['node_id']
+        #print ('node_id', node_id)
         for scenario in range(n):
             gen_df = get_gen_data(gen_index=node_id)[:96]
+            #print ('gen_df', gen_df.values)
             normalized_df = (gen_df-gen_df.min())/(gen_df.max()-gen_df.min())
+            #print ('normalized_df', normalized_df)
             gen_df = data['gen_kw'] * normalized_df
+            #print ('gen_df', gen_df)
             gens.append(gen_df.pgen.values)
             node_id += 1
     else:
         for scenario in range(n):
             some_gen_max_value = 1.5
             gen_df = get_gen_data()[:96]
+            #print ('gen_df', gen_df)
             normalized_df = (gen_df-gen_df.min())/(gen_df.max()-gen_df.min())
+            #print ('normalized_df', normalized_df)
             gen_df = some_gen_max_value * normalized_df
+            #print ('gen_df', gen_df)
             gens.append(gen_df.pgen.values)
     return gens
 
@@ -57,8 +71,10 @@ def pick_spot_prices_scenarios_from_db(n, data=None):
 
     if data:
         node_id = data['node_id']
+        #print ('node_id', node_id)
         for scenario in range(n):
             prices.append(get_spot_prices_data(spot_index=node_id).Price.values[:96])
+            #print ('prices', prices)
             node_id += 1
     else:
         for scenario in range(n):
@@ -70,12 +86,12 @@ def reduce_scenarios(scenarios, reduced_scenarios_qtd, probs = None):
     # ---------------------------------------------
     # Definição das variaveis utilizadas
     # ---------------------------------------------
-    
     # probabilidade associada a cada um dos cenarios
     scenarios_qtd = len(scenarios)
+    #print ('scenarios_qtd', scenarios_qtd)
     if not probs:
         probs = [1 / scenarios_qtd for i in range(scenarios_qtd)]
-
+        #print ('probs', probs)
     reduced_load_scenarios = list()
     scenarios_reduced_index = list()
     costs = list()
@@ -89,8 +105,11 @@ def reduce_scenarios(scenarios, reduced_scenarios_qtd, probs = None):
         aux = list()
         for k in scenarios:
             aux.append(np.linalg.norm(l - k))
+            #print('aux',aux)
         costs.append(aux)
+        #print('costs',costs)
     costs = np.array(costs)
+    #print('costs2', costs)
 
     # ---------------------------------------------
     # Compute das distancias de Kantorovich para
@@ -178,22 +197,28 @@ def reduce_scenarios(scenarios, reduced_scenarios_qtd, probs = None):
 
 def merge_scenarios(scenarios_data):
     merged_scenarios = list()
+    #print('scenarios_data', scenarios_data)
     dt1 = scenarios_data.pop(0)
+    #print('dt1',dt1)
     while scenarios_data:
         dt2 = scenarios_data.pop(0)
+        #print('dt2',dt2)
         for i1, i2 in dt1['probs'].items():
             for j1, j2 in dt2['probs'].items():
                 new_scenario = {'name': 'Scenario-{}{}_{}{}'.format(dt1['prefix'], i1, dt2['prefix'], j1),
                                 'prob': i2 * j2,
                                 'data': [dt1['data'][i1], dt2['data'][j1]]}
+                #print('new_scenario',new_scenario)
                 merged_scenarios.append(new_scenario)
+                #print('merged_scenarios',merged_scenarios)
     return merged_scenarios
 
 
 def write_scenario_struct(data):
     has_storage = data['has_storage']
+    #print('has_storage',has_storage)
     data = data['scenarios']
-
+    #print('data',data)
     path = str(pathlib.Path(__file__).parent.absolute())
 
     with open(path + '/ScenarioStructure.dat', 'w') as f:
@@ -237,7 +262,9 @@ def write_scenario_struct(data):
 
 def main(scenarios_qtd, reduced_scenarios_qtd, data=None):
     scenarios_qtd = scenarios_qtd  # numero de cenarios carregados
+    #print ('scenarios_qtd',scenarios_qtd)
     reduced_scenarios_qtd = reduced_scenarios_qtd  # numero de cenarios reduzidos
+    #print ('reduce_scenarios',reduced_scenarios_qtd)
     # ---------------------------------------------
     # carrega os dados dos cenarios de carga,
     # geração e preços do mercado spot
@@ -271,16 +298,18 @@ def main(scenarios_qtd, reduced_scenarios_qtd, data=None):
             'data': gen_scenarios,
             'probs': gen_probs,
         }]
+    #print ('scenarios_data',scenarios_data)
     merged_scenarios_data = merge_scenarios(list(scenarios_data))
-
+    #print ('merged_scenarios_data',merged_scenarios_data)
     demand_scenarios = list()
     demand_probs = list()
     for i in merged_scenarios_data:
         i['data'] = i['data'][0] - i['data'][1]
+        #print(i)
         demand_scenarios.append(i['data'])
         demand_probs.append(i['prob'])
     demand_probs = {i: j for i, j in enumerate(demand_probs)}
-
+    #print ('demand probs', demand_probs)
     # ---------------------------------------------
     # reduz os cenarios de carga combinados com geração (demanda)
     # ---------------------------------------------
@@ -303,11 +332,11 @@ def main(scenarios_qtd, reduced_scenarios_qtd, data=None):
         }]
 
     merged_scenarios_data = merge_scenarios(list(scenarios_data))
-
+    #print(merged_scenarios_data)
 
     if not data:
         data = dict()
-        data['bilatral_price'] = 40.0
+        data['bilatral_price'] = 38.0
         data['bilateral_max'] = 2.0
         data['has_storage'] = True
         data['storage_rate'] = 0.1
@@ -316,13 +345,35 @@ def main(scenarios_qtd, reduced_scenarios_qtd, data=None):
         data['max_soc'] = 2.0
         data['min_soc'] = 0.2
 
+# ========== INÍCIO DA MODIFICAÇÃO ==========
+    
     data['scenarios'] = {}
+    # 1. Inicializa a variável para guardar o maior preço encontrado
+    overall_max_spot_price = 0.0
+
     for i in merged_scenarios_data:
+        # Pega a lista de preços spot do cenário atual
+        spot_price_list = list(np.round(i['data'][1], 4))
+        
+        # 2. Encontra o maior preço DENTRO do cenário atual
+        #    (verifica se a lista não está vazia para evitar erros)
+        if spot_price_list:
+            current_max = max(spot_price_list)
+            # 3. Atualiza o maior preço geral se o do cenário atual for maior
+            if current_max > overall_max_spot_price:
+                overall_max_spot_price = current_max
+
+        # Adiciona os dados do cenário ao dicionário, como antes
         data['scenarios'][i['name']] = {
             'prob': i['prob'],
             'demand_data': list(np.round(i['data'][0], 4)),
-            'spot_price_data': list(np.round(i['data'][1], 4))
+            'spot_price_data': spot_price_list
         }
+
+    # 4. Adiciona a nova chave 'max_spot_price' ao dicionário principal
+    data['max_spot_price'] = overall_max_spot_price
+    
+    # ========== FIM DA MODIFICAÇÃO ==========
 
     path = str(pathlib.Path(__file__).parent.absolute())
     with open(path + '/config.json', 'w') as f:
@@ -345,4 +396,4 @@ def main(scenarios_qtd, reduced_scenarios_qtd, data=None):
 
 
 if __name__ == "__main__":
-    main(scenarios_qtd=10, reduced_scenarios_qtd=3)
+    main(scenarios_qtd=9, reduced_scenarios_qtd=3)
