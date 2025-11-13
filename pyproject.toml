@@ -1,0 +1,31 @@
+[build-system]
+# Define como o projeto será 'construído' (empacotado)
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+# Sinta-se à vontade para alterar 'name', 'version' e 'description'
+name = "smart-emanager"
+version = "0.1.0"
+description = "Um projeto usando Pyomo e outras bibliotecas de dados."
+
+# Define a compatibilidade do Python.
+# '>=3.12' é a melhor prática, pois inclui sua versão 3.12.11
+# e permite patches de segurança futuros (ex: 3.12.12) sem quebrar.
+requires-python = ">=3.12"
+
+# Suas dependências principais
+dependencies = [
+    "pyomo",
+    "numpy",
+    "pandas",
+    "matplotlib",
+    "networkx"
+]
+
+# (Opcional) Adicione aqui dependências de desenvolvimento
+# [project.optional-dependencies]
+# dev = [
+#     "pytest",
+#     "ruff",
+# ]
