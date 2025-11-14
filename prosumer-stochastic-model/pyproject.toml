@@ -1,0 +1,17 @@
+[project]
+# Nome do projeto (pode ser o que você quiser)
+name = "prosumer-stochastic-model"
+version = "1.0.0"
+
+# Travamos a versão do Python que sabemos que funciona
+requires-python = "==3.10.14"
+
+# Nossas dependências com as versões exatas!
+dependencies = [
+    "pyomo==5.7.3",
+    "numpy==1.23.4",
+    "pandas==1.5.2",
+    "matplotlib==3.6.2",
+    "networkx==2.8.8",
+    "openpyxl==3.0.10"
+]
